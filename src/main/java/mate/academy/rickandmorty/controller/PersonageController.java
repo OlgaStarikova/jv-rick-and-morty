@@ -24,7 +24,7 @@ public class PersonageController {
     @Operation(summary = "Get a list of characters ", description = " Get a list of all characters"
             + " whose name contains the search string. "
             + " Parameters: name = String for searching")
-    public List<PersonageDto> findByName(@RequestParam(name = "name") String name) {
+    public List<PersonageDto> findByName(@RequestParam String name) {
         return personageService.getPersonagesByName(name);
     }
 

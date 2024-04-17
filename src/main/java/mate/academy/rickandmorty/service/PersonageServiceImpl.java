@@ -11,6 +11,7 @@ import mate.academy.rickandmorty.mapper.PersonageMapper;
 import mate.academy.rickandmorty.model.Personage;
 import mate.academy.rickandmorty.repository.PersonageRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
@@ -32,15 +33,18 @@ public class PersonageServiceImpl implements PersonageService {
     }
 
     @Override
+    @Transactional
     public PersonageDto getRandomPersonage() {
         Optional<Personage> personage = Optional.empty();
-        while (personage.isEmpty() && personageRepository.getMaxId() != 0) {
-            Long randomId = random.nextLong(personageRepository.getMaxId() + 1);
-            personage = personageRepository.findById(randomId);
+        if (personageRepository.count() > 0) {
+            while (personage.isEmpty()) {
+                Long randomId = random.nextLong(personageRepository.count() + 1);
+                personage = personageRepository.findById(randomId);
+            }
         }
         return personageMapper
                 .toDto(personage.orElseThrow(
-                                () -> new EntityNotFoundException("Not found any random personage")
+                                () -> new EntityNotFoundException("Not found any personage")
                         )
                 );
     }

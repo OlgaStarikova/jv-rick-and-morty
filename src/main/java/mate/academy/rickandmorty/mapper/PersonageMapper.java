@@ -9,7 +9,6 @@ import org.mapstruct.Mapping;
 
 @Mapper(config = MapperConfig.class)
 public interface PersonageMapper {
-    @Mapping(source = "id", target = "id")
     PersonageDto toDto(Personage personage);
 
     @Mapping(source = "id", target = "externalId")

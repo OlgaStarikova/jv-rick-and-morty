@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 public class PersonageApiClientImpl implements PersonageApiClient {
 
     private static final String BASE_URL = "https://rickandmortyapi.com/api/character";
+    private final ObjectMapper objectMapper;
 
     @Override
     public List<ResponsePersonageDto> getAllResponsePersonages() {
@@ -40,7 +41,6 @@ public class PersonageApiClientImpl implements PersonageApiClient {
         try {
             HttpResponse<String> response = httpClient
                     .send(httprequest, HttpResponse.BodyHandlers.ofString());
-            ObjectMapper objectMapper = new ObjectMapper();
             ResponseDto responseDto = objectMapper.readValue(
                     response.body(),
                     ResponseDto.class);
