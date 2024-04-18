@@ -1,5 +1,6 @@
 package mate.academy.rickandmorty.mapper;
 
+import java.util.List;
 import mate.academy.rickandmorty.config.MapperConfig;
 import mate.academy.rickandmorty.dto.external.ResponsePersonageDto;
 import mate.academy.rickandmorty.dto.internal.PersonageDto;
@@ -13,4 +14,8 @@ public interface PersonageMapper {
 
     @Mapping(source = "id", target = "externalId")
     Personage toModel(ResponsePersonageDto responsePersonageDto);
+
+    List<Personage> toModelList(List<ResponsePersonageDto> dtoList);
+
+    List<PersonageDto> toDtoList(List<Personage> list);
 }

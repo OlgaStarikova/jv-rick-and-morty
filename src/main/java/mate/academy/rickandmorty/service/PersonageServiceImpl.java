@@ -24,23 +24,19 @@ public class PersonageServiceImpl implements PersonageService {
     @Override
     @PostConstruct
     public void init() {
-        List<Personage> listPersonages = personageApiClient
-                .getAllResponsePersonages()
-                .stream()
-                .map(personageMapper::toModel)
-                .toList();
-        List<Personage> personages = personageRepository.saveAll(listPersonages);
+        List<Personage> personages = personageRepository.saveAll(
+                personageMapper.toModelList(personageApiClient.getAllResponsePersonages())
+        );
     }
 
     @Override
     @Transactional
     public PersonageDto getRandomPersonage() {
         Optional<Personage> personage = Optional.empty();
-        if (personageRepository.count() > 0) {
-            while (personage.isEmpty()) {
-                Long randomId = random.nextLong(personageRepository.count() + 1);
-                personage = personageRepository.findById(randomId);
-            }
+        Long personageCount = personageRepository.count();
+        if (personageCount > 0) {
+            Long randomId = random.nextLong(personageCount + 1);
+            personage = personageRepository.findById(randomId);
         }
         return personageMapper
                 .toDto(personage.orElseThrow(
@@ -51,10 +47,7 @@ public class PersonageServiceImpl implements PersonageService {
 
     @Override
     public List<PersonageDto> getPersonagesByName(String name) {
-        return personageRepository
-                .findAllByNameContainsIgnoreCase(name)
-                .stream()
-                .map(personageMapper::toDto)
-                .toList();
+        return personageMapper.toDtoList(personageRepository
+                .findAllByNameContainsIgnoreCase(name));
     }
 }
