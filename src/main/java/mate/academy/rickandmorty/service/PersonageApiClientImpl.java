@@ -16,17 +16,16 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 @Service
 public class PersonageApiClientImpl implements PersonageApiClient {
-
     private static final String BASE_URL = "https://rickandmortyapi.com/api/character";
     private final ObjectMapper objectMapper;
 
     @Override
     public List<ResponsePersonageDto> getAllResponsePersonages() {
         ResponseDto responseDto = getResponseDto(BASE_URL);
-        List<ResponsePersonageDto> listPersonageDto = new ArrayList<>(responseDto.getPersonages());
-        while (responseDto.getInfo().getNext() != null) {
-            responseDto = getResponseDto(responseDto.getInfo().getNext());
-            listPersonageDto.addAll(responseDto.getPersonages());
+        List<ResponsePersonageDto> listPersonageDto = new ArrayList<>(responseDto.personages());
+        while (responseDto.info().next() != null) {
+            responseDto = getResponseDto(responseDto.info().next());
+            listPersonageDto.addAll(responseDto.personages());
         }
         return listPersonageDto;
     }
