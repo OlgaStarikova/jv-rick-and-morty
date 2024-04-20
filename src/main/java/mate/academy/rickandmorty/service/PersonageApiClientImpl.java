@@ -45,7 +45,7 @@ public class PersonageApiClientImpl implements PersonageApiClient {
                     ResponseDto.class);
             return responseDto;
         } catch (IOException | InterruptedException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Not current response. Can't create response object",e);
         }
     }
 }
